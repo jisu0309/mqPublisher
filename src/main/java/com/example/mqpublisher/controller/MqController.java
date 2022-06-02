@@ -6,10 +6,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class MqController {
@@ -29,13 +26,19 @@ public class MqController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/create/queue")
+    @PostMapping("/queue")
     public ResponseEntity createQueue(@RequestParam("queueName") String queueName,
                                       @RequestParam("routingKey") String routingKey){
         Queue queue = new Queue(queueName, true, false, false);
         Binding binding = new Binding(queueName, Binding.DestinationType.QUEUE, EXCHANGE_NAME, routingKey, null);
         amqpAdmin.declareQueue(queue);
         amqpAdmin.declareBinding(binding);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/queue")
+    public ResponseEntity delelteQueue(@RequestParam("queueName") String queueName){
+        amqpAdmin.deleteQueue(queueName);
         return ResponseEntity.ok().build();
     }
 
