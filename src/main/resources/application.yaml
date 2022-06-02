@@ -1,0 +1,10 @@
+server:
+  port: 9081
+
+spring:
+  rabbitmq:
+    host: 130.162.157.50
+    port: 5672
+    username: cook
+    password: 1q2w3e4r
+    virtual-host: mqtest
